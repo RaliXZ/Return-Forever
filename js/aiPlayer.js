@@ -146,8 +146,8 @@ window.game.aiPlayer = {
         vol = Math.max(0.15, Math.min(1, window.game.voiceControl.getVolume()));
       }
     }
-    // 线性连续映射：factor = 0.1 + vol * 1.0（vol∈[0.15,1] → factor∈[0.25,1.1]）
-    var factor = 0.1 + vol * 1.0;
+    // 线性连续映射：factor = 0.3 + vol * 1.5（vol∈[0.15,1] → factor∈[0.525,1.8]）
+    var factor = 0.3 + vol * 1.5;
     var baseSpeed = 140;
     var baseJumpVel = this.jumpVelocity !== null ? this.jumpVelocity : (window.game.JUMP_VELOCITY || -380);
     // 音量线性缩放：距离、速度、跳跃初速度，无钳制保证纯线性
