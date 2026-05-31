@@ -739,13 +739,19 @@ if (this.checkWinCondition()) {
   },
 
   /**
-   * 启动游戏循环并加载精灵图。
-   * 等待所有精灵加载完成后再开始渲染，避免显示灰色方块。
+   * 启动游戏循环并后台加载精灵图。
+   * 第一帧即开始渲染（几何占位），精灵加载完成后自动切换。
    */
   async _bootGame() {
+    // 立即启动游戏循环（先用几何占位渲染，不等待精灵加载）
     var self = this;
 
-    // 先等待精灵图加载完成
+    // 显示游戏UI面板（LLM/语音/排行榜等）
+    if (window.gsapAnimations && typeof window.gsapAnimations.showGameUI === "function") {
+      try { window.gsapAnimations.showGameUI(); } catch(e) {}
+    }
+
+    // 加载精灵图（完成后再启动游戏，避免显示灰色占位符）
     if (this.sprites && typeof this.sprites.loadAll === 'function') {
       await this.sprites.loadAll();
     }
@@ -756,11 +762,6 @@ if (this.checkWinCondition()) {
     // 隐藏加载条
     var loadBar = document.getElementById("loading-bar");
     if (loadBar) loadBar.className = "loading-hidden";
-
-    // 显示游戏UI面板（LLM/语音/排行榜等）
-    if (window.gsapAnimations && typeof window.gsapAnimations.showGameUI === "function") {
-      try { window.gsapAnimations.showGameUI(); } catch(e) {}
-    }
 
     // Show tutorial or start game loop
     if (!localStorage.getItem('loopPrisonTutorialDone')) {
