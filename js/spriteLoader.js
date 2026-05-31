@@ -16,6 +16,7 @@
  * 【提供】window.game.sprites
  * ============================================================ */
 
+window.game = window.game || {};
 window.game.sprites = {
 
   // ---- 图片存储 ----
