@@ -739,23 +739,28 @@ if (this.checkWinCondition()) {
   },
 
   /**
-   * 启动游戏循环并后台加载精灵图。
-   * 第一帧即开始渲染（几何占位），精灵加载完成后自动切换。
+   * 启动游戏循环并加载精灵图。
+   * 等待所有精灵加载完成后再开始渲染，避免显示灰色方块。
    */
   async _bootGame() {
-    // 立即启动游戏循环（先用几何占位渲染，不等待精灵加载）
     var self = this;
+
+    // 先等待精灵图加载完成
+    if (this.sprites && typeof this.sprites.loadAll === 'function') {
+      await this.sprites.loadAll();
+    }
+
+    // 设置艾莉头像图片
+    this._setupAllyAvatar();
+
+    // 隐藏加载条
+    var loadBar = document.getElementById("loading-bar");
+    if (loadBar) loadBar.className = "loading-hidden";
 
     // 显示游戏UI面板（LLM/语音/排行榜等）
     if (window.gsapAnimations && typeof window.gsapAnimations.showGameUI === "function") {
       try { window.gsapAnimations.showGameUI(); } catch(e) {}
     }
-
-    // 3秒后自动隐藏加载条（防止精灵加载过慢阻塞界面）
-    var loadBarTimeout = setTimeout(function() {
-      var lb = document.getElementById("loading-bar");
-      if (lb) lb.className = "loading-hidden";
-    }, 3000);
 
     // Show tutorial or start game loop
     if (!localStorage.getItem('loopPrisonTutorialDone')) {
@@ -763,18 +768,6 @@ if (this.checkWinCondition()) {
     } else {
       this._startLoop();
     }
-
-    // 后台加载精灵图（加载完成后自动切换，不阻塞游戏）
-    if (this.sprites && typeof this.sprites.loadAll === 'function') {
-      await this.sprites.loadAll();
-    }
-
-    // 设置艾莉头像图片
-    this._setupAllyAvatar();
-    // Hide loading bar after sprites loaded
-    var loadBar = document.getElementById("loading-bar");
-    if (loadBar) loadBar.className = "loading-hidden";
-    clearTimeout(loadBarTimeout);
   },
 
   _startLoop() {
