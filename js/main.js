@@ -764,11 +764,14 @@ if (this.checkWinCondition()) {
     if (loadBar) loadBar.className = "loading-hidden";
 
     // Show tutorial or start game loop
-    if (!localStorage.getItem('loopPrisonTutorialDone')) {
-      this._showTutorial();
-    } else {
-      this._startLoop();
-    }
+    // 强制显示教程（移除之前的完成标记）
+    try { localStorage.removeItem('loopPrisonTutorialDone'); } catch(e) {}
+    this._showTutorial();
+    // if (!localStorage.getItem('loopPrisonTutorialDone')) {
+    //   this._showTutorial();
+    // } else {
+    //   this._startLoop();
+    // }
   },
 
   _startLoop() {
