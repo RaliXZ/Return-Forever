@@ -751,9 +751,9 @@ if (this.checkWinCondition()) {
       try { window.gsapAnimations.showGameUI(); } catch(e) {}
     }
 
-    // 优先加载环境素材（平台、墙壁等），完成后立即启动游戏
-    if (this.sprites && typeof this.sprites.loadEnvFirst === 'function') {
-      await this.sprites.loadEnvFirst();
+    // 加载精灵图（完成后再启动游戏，避免显示灰色占位符）
+    if (this.sprites && typeof this.sprites.loadAll === 'function') {
+      await this.sprites.loadAll();
     }
 
     // 设置艾莉头像图片
@@ -768,11 +768,6 @@ if (this.checkWinCondition()) {
       this._showTutorial();
     } else {
       this._startLoop();
-    }
-
-    // 后台继续加载角色精灵（不阻塞游戏）
-    if (this.sprites && typeof this.sprites.loadCharacters === 'function') {
-      this.sprites.loadCharacters();
     }
   },
 

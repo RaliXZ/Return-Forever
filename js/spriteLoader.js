@@ -105,23 +105,6 @@ window.game.sprites = {
   },
 
   /**
-   * 优先加载环境素材（平台、墙壁等关键纹理）
-   * @returns {Promise<void>}
-   */
-  async loadEnvFirst() {
-    await this._loadEnv().catch(() => {});
-    await this._loadAlly().catch(() => {});
-  },
-
-  /**
-   * 后台加载角色精灵（不阻塞游戏）
-   */
-  loadCharacters() {
-    this._loadRole('player').catch(() => {});
-    this._loadRole('ai').catch(() => {});
-  },
-
-  /**
    * 加载全部角色图片。缺失文件不阻塞游戏。
    * @returns {Promise<void>}
    */
