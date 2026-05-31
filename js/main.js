@@ -1052,6 +1052,11 @@ window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('settings-modal').addEventListener('click', function(e) {
         if (e.target === this) this.className = 'modal-hidden';
       });
+      document.getElementById('btn-show-tutorial').addEventListener('click', function() {
+        document.getElementById('settings-modal').className = 'modal-hidden';
+        try { localStorage.removeItem('loopPrisonTutorialDone'); } catch(e) {}
+        window.game._showTutorial();
+      });
 
       // ---- 音量滑块 ----
       document.getElementById('setting-volume').addEventListener('input', function() {
