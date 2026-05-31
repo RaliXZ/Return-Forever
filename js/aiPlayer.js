@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿/* ============================================================
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿/* ============================================================
  * AI 队友模块 - 横版平台跳跃 + 语音/LLM 外部指令支持
  *
  * 支持两种模式：
@@ -146,8 +146,8 @@ window.game.aiPlayer = {
         vol = Math.max(0.15, Math.min(1, window.game.voiceControl.getVolume()));
       }
     }
-    // 线性连续映射：factor = 0.3 + vol * 1.7（vol∈[0.15,1] → factor∈[0.555,2.0]）
-    var factor = 0.3 + vol * 1.7;
+    // 线性连续映射：factor = 0.1 + vol * 1.0（vol∈[0.15,1] → factor∈[0.25,1.1]）
+    var factor = 0.1 + vol * 1.0;
     var baseSpeed = 140;
     var baseJumpVel = this.jumpVelocity !== null ? this.jumpVelocity : (window.game.JUMP_VELOCITY || -380);
     // 音量线性缩放：距离、速度、跳跃初速度，无钳制保证纯线性
@@ -476,9 +476,14 @@ window.game.aiPlayer = {
           }
         }
       }
-      // 距离用完后只停止移动，不清除指令，等待下一条指令
+      // 距离用完后停止移动并清除指令
       if (this._moveDistanceRemaining <= 0) {
         this._moveDistanceRemaining = 0;
+        // 如果是纯移动指令（不含跳跃），用完距离后清除指令
+        if (this.externalCommand &&
+            (this.externalCommand.action === 'move_left' || this.externalCommand.action === 'move_right')) {
+          this.clearExternalCommand();
+        }
       }
     }
 
