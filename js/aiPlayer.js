@@ -568,12 +568,13 @@ window.game.aiPlayer = {
       }
     }
 
-    // ---- 致命障碍检测 ----
-    if (map.checkDeadlyCollision({ x: this.x, y: this.y, w: this.w, h: this.h })) {
-      this.die();
-    }
+    // ---- AI 角色对地刺等致命障碍无敌 ----
+    // 移除致命障碍检测，让AI可以安全穿过地刺
+    // if (map.checkDeadlyCollision({ x: this.x, y: this.y, w: this.w, h: this.h })) {
+    //   this.die();
+    // }
 
-    // （AI 免疫子弹和掉落函数块伤害）
+    // AI 免疫子弹、掉落函数块和致命障碍（如地刺）伤害
 
     // ---- 掉出屏幕底部 ----
     if (this.y > 600) { this.die(); }
