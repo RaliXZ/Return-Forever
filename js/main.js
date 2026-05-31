@@ -302,7 +302,7 @@ Object.assign(window.game, {
     var overlay = document.getElementById('tutorial-overlay');
     if (!overlay) { return; }
     overlay.className = 'modal-visible';
-    var currentStep = 0, totalSteps = 3, self = this;
+    var currentStep = 0, totalSteps = 4, self = this;
     function updateStep(step) {
       var s = document.querySelectorAll('.tutorial-step');
       for (var i = 0; i < s.length; i++) s[i].className = 'tutorial-step' + (i === step ? ' tutorial-step-active' : '');
