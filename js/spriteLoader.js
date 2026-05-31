@@ -99,9 +99,17 @@ window.game.sprites = {
   _loadImage(src) {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error(`Failed to load ${src}`));
-      img.src = src + '?v=' + Date.now();
+      img.onload = () => {
+        console.log(`[精灵] 图片加载成功: ${src}`);
+        resolve(img);
+      };
+      img.onerror = () => {
+        console.error(`[精灵] 图片加载失败: ${src}`);
+        reject(new Error(`Failed to load ${src}`));
+      };
+      const cacheBuster = '?v=' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+      img.src = src + cacheBuster;
+      console.log(`[精灵] 正在加载: ${src}${cacheBuster}`);
     });
   },
 
